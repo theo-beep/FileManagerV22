@@ -1,12 +1,14 @@
 package android.template.ui.viewmodels
 
 import android.template.common.DataResource
-import android.template.data.Repository.FileManagerRepository
+import android.template.domain.usecases.AddNewFileUsecase
 import android.template.domain.usecases.GetAllFilesUsecase
 import android.template.domain.usecases.RefreshAllFilesUseCase
 import android.template.ui.state.HomeScreenUiState
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -16,7 +18,8 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val files: GetAllFilesUsecase,
-    private val refreshFiles: RefreshAllFilesUseCase
+    private val refreshFiles: RefreshAllFilesUseCase,
+    private val addNewFile: AddNewFileUsecase
 ) : ViewModel() {
 
     private val _state: MutableStateFlow<HomeScreenUiState> =
@@ -24,6 +27,10 @@ class HomeViewModel @Inject constructor(
     val state: StateFlow<HomeScreenUiState> = _state
 
     init {
+        refreshFiles()
+    }
+
+    private fun refreshFiles() {
         viewModelScope.launch {
             _state.value = HomeScreenUiState.Loading
             refreshFiles.invoke().collect {
@@ -46,6 +53,12 @@ class HomeViewModel @Inject constructor(
                     }
                 }
             }
+        }
+    }
+
+    fun addNewFile(path: String) {
+        viewModelScope.launch {
+            addNewFile.invoke(path)
         }
     }
 }

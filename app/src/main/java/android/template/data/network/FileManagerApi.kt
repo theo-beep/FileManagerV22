@@ -22,7 +22,7 @@ interface FileManagerApi {
     ) : GetFilesResponse
 
     @POST("/file")
-    suspend fun postNewDocument(@Body requestBody: CreateFileRequest): Response<Any>
+    suspend fun postNewDocument(@Body requestBody: CreateFileRequest)
 
     @PUT("/files")
     suspend fun putFilePath(@Body requestBody: UpdateRequest)

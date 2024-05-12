@@ -2,22 +2,20 @@ package android.template.domain.usecases
 
 import android.template.common.DataResource
 import android.template.data.Repository.FileManagerRepository
-import android.template.domain.models.FileDomain
-import com.theolin.filemanagerapplication.Data.Database.FileStore
 import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException
 import java.io.IOException
 import javax.inject.Inject
 
-class EditFilesUsecase @Inject constructor(
+class AddNewFileUsecase @Inject constructor(
     private val fileRepository: FileManagerRepository
 ) {
-    suspend operator fun invoke(file: FileDomain) = flow {
+    suspend operator fun invoke(file: String) = flow {
         try {
             emit(DataResource.Loading())
-            when (val result = fileRepository.editFile(file)) {
+            when (val result = fileRepository.addNewFile(file)) {
                 is DataResource.Success -> {
-                    emit(DataResource.Success(result.data))
+                    emit(DataResource.Success(result.data ?: emptyList()))
                 }
 
                 is DataResource.Error -> emit(DataResource.Error(result.message))
@@ -29,5 +27,4 @@ class EditFilesUsecase @Inject constructor(
             emit(DataResource.Error("Couldn't reach server. Check your internet connection."))
         }
     }
-
 }

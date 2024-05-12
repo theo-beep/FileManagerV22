@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
@@ -18,12 +19,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.room.Delete
 
 @Composable
 fun FileCardComponent(
     title: String,
-    text: String ,
-    onClick: () -> Unit
+    text: String,
+    onEditClick: () -> Unit ,
+    onDeleteClick : () -> Unit
 ) {
     Card(
         modifier = Modifier.fillMaxWidth()
@@ -53,11 +56,23 @@ fun FileCardComponent(
             OutlinedButton(
                 border = null,
                 onClick = {
-                onClick()
+                onEditClick()
             }) {
                 Icon(
                     modifier = Modifier.size(40.dp),
                     imageVector = Icons.Filled.Edit,
+                    contentDescription = "Edit"
+                )
+            }
+            Spacer(modifier = Modifier.size(4.dp))
+            OutlinedButton(
+                border = null,
+                onClick = {
+                    onDeleteClick()
+                }) {
+                Icon(
+                    modifier = Modifier.size(40.dp),
+                    imageVector = Icons.Filled.Delete,
                     contentDescription = "Edit"
                 )
             }
@@ -68,5 +83,5 @@ fun FileCardComponent(
 @Preview
 @Composable
 fun PreviewFileCardComponent() {
-    FileCardComponent(title = "Title", text = "Body Text",{})
+    FileCardComponent(title = "Title", text = "Body Text", onDeleteClick = {} , onEditClick = {})
 }

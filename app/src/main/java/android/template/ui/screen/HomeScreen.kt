@@ -1,6 +1,7 @@
 package android.template.ui.screen
 
 import android.os.Build
+import android.template.ui.components.ErrorDialog
 import android.template.ui.components.FileCardComponent
 import android.template.ui.state.HomeScreenUiState
 import android.template.ui.viewmodels.HomeViewModel
@@ -9,18 +10,15 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -29,7 +27,6 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -55,7 +52,7 @@ fun HomeScreen(
             )
         },
         bottomBar = {
-                    //TODO : Disable but maybe add in later
+            //TODO : Disable but maybe add in later
 //            BottomAppBar(
 //                containerColor = MaterialTheme.colorScheme.primaryContainer,
 //                contentColor = MaterialTheme.colorScheme.primary,
@@ -71,7 +68,9 @@ fun HomeScreen(
         floatingActionButton = {
 
             ExtendedFloatingActionButton(
-                onClick = { /* do something */ })
+                onClick = {
+                    viewModel.addNewFile("")
+                })
             {
                 Icon(imageVector = Icons.Filled.Add, contentDescription = "Add New File Path")
                 Text(text = "Add File")
@@ -96,14 +95,23 @@ fun HomeScreen(
                         items((state.value as HomeScreenUiState.Success).files) {
                             Spacer(modifier = Modifier.size(6.dp))
                             //TODO : add impl
-                            FileCardComponent(it.name, it.type, {})
+                            FileCardComponent(
+                                title = it.name,
+                                text = it.type,
+                                onEditClick = {},
+                                onDeleteClick = {})
                         }
                     }
                 }
 
                 is HomeScreenUiState.Error -> {
                     //TODO : Make Error Screen
-                    Text(text = "Error")
+                    ErrorDialog(
+                        (state.value as HomeScreenUiState.Error).error.orEmpty(),
+                        onDismiss = {
+
+                        }
+                    )
                 }
 
                 HomeScreenUiState.Idle -> {

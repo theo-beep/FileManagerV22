@@ -6,10 +6,13 @@ import android.template.data.network.model.CreateFileRequest
 import android.template.data.network.model.toDomain
 import android.template.domain.models.FileDomain
 import com.theolin.filemanagerapplication.Data.Database.FileManagerDb
+import com.theolin.filemanagerapplication.Data.Database.FileStore
 import com.theolin.filemanagerapplication.Data.Database.toDomain
 import com.theolin.filemanagerapplication.Data.Database.toStore
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import retrofit2.HttpException
+import java.io.IOException
 import javax.inject.Inject
 
 interface FileManagerRepository {
@@ -17,7 +20,11 @@ interface FileManagerRepository {
 
     suspend fun refreshDb(): DataResource<List<FileDomain>>
 
-    suspend fun addNewFile(filePath: String)
+    suspend fun editFile(filePath: FileDomain) :DataResource<Any>
+
+    suspend fun deleteFile(filePath: FileDomain): DataResource<Any>
+
+    suspend fun addNewFile(filePath: String): DataResource<List<FileDomain>>
 
     suspend fun clearDb()
 }
@@ -62,18 +69,23 @@ class FileManagerRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun addNewFile(filePath: String) {
-        //TODO : If I have time make a class to inject dispatchers for testing
+    override suspend fun editFile(filePath: FileDomain): DataResource<Any> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun deleteFile(filePath: FileDomain): DataResource<Any> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun addNewFile(filePath: String): DataResource<List<FileDomain>> {
+        // TODO: If I have time make a class to inject dispatchers for testing
         return withContext(Dispatchers.IO) {
             try {
                 val request = CreateFileRequest(path = filePath)
-                val result = api.postNewDocument(request)
+                api.postNewDocument(request)
                 refreshDb()
             } catch (e: Exception) {
-                e.printStackTrace()
-                DataResource.Error(
-                    message = e.stackTraceToString()
-                )
+                DataResource.Error(message = e.message ?: "Unknown error")
             }
         }
     }
