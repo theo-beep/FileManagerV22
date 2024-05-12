@@ -9,6 +9,11 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import android.template.ui.state.HomeScreenUiState
 import android.template.ui.viewmodels.HomeViewModel
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.size
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 
 @RequiresApi(Build.VERSION_CODES.N)
 @Composable
@@ -22,13 +27,21 @@ fun HomeScreen(
             CircularProgressIndicator()
         }
         is HomeScreenUiState.Success -> {
-            (state.value as HomeScreenUiState.Success).files.forEach{
-                Text(it.name)
-            }
+           Column {
+               (state.value as HomeScreenUiState.Success).files.forEach{
+                   Text(it.name)
+               }
+               Spacer(modifier = Modifier.size(12.dp))
+           }
         }
 
-        is HomeScreenUiState.Error -> TODO()
-        HomeScreenUiState.Idle -> TODO()
+        is HomeScreenUiState.Error -> {
+            //TODO : Make Error Screen
+            Text(text = "Error")
+        }
+        HomeScreenUiState.Idle -> {
+
+        }
     }
 
 }

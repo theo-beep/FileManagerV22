@@ -1,6 +1,7 @@
 package android.template.ui.viewmodels
 
 import android.template.common.DataResource
+import android.template.data.network.Repository.FileManagerRepository
 import android.template.domain.usecases.GetAllFilesUsecase
 import android.template.ui.state.HomeScreenUiState
 import androidx.lifecycle.ViewModel
@@ -33,9 +34,29 @@ class HomeViewModel @Inject constructor(
                         _state.value = HomeScreenUiState.Error(it.message)
                     }
 
-                    is DataResource.Loading -> TODO()
+                    is DataResource.Loading -> {
+                        _state.value = HomeScreenUiState.Loading
+
+                    }
                 }
             }
         }
+
+//        viewModelScope.launch {
+//            _state.value = HomeScreenUiState.Loading
+//            files.invoke().collect {
+//                when (it) {
+//                    is DataResource.Success -> {
+//                        _state.value = HomeScreenUiState.Success(it.data ?: emptyList())
+//                    }
+//
+//                    is DataResource.Error -> {
+//                        _state.value = HomeScreenUiState.Error(it.message)
+//                    }
+//
+//                    is DataResource.Loading -> TODO()
+//                }
+//            }
+//        }
     }
 }
