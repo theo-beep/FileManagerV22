@@ -1,8 +1,9 @@
 package android.template.ui.viewmodels
 
 import android.template.common.DataResource
-import android.template.data.network.Repository.FileManagerRepository
+import android.template.data.Repository.FileManagerRepository
 import android.template.domain.usecases.GetAllFilesUsecase
+import android.template.domain.usecases.RefreshAllFilesUseCase
 import android.template.ui.state.HomeScreenUiState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -14,7 +15,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val files: GetAllFilesUsecase
+    private val files: GetAllFilesUsecase,
+    private val refreshFiles: RefreshAllFilesUseCase
 ) : ViewModel() {
 
     private val _state: MutableStateFlow<HomeScreenUiState> =
@@ -24,7 +26,7 @@ class HomeViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             _state.value = HomeScreenUiState.Loading
-            files.invoke().collect {
+            refreshFiles.invoke().collect {
                 when (it) {
                     is DataResource.Success -> {
                         _state.value = HomeScreenUiState.Success(it.data ?: emptyList())

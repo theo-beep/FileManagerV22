@@ -16,12 +16,6 @@
 
 package android.template.data
 
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
-import android.template.data.local.database.MyModel
-import android.template.data.local.database.MyModelDao
-import javax.inject.Inject
-
 //TODO : Remove this
 
 //interface MyModelRepository {

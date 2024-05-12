@@ -9,16 +9,18 @@ import retrofit2.HttpException
 import java.io.IOException
 import javax.inject.Inject
 
-class GetAllFilesUsecase @Inject constructor(
+class RefreshAllFilesUseCase @Inject constructor(
     private val fileRepository: FileManagerRepository
 ) {
+
     operator fun invoke(): Flow<DataResource<List<FileDomain>>> = flow {
         try {
             emit(DataResource.Loading())
-            when (val result = fileRepository.getFiles()) {
+            when (val result = fileRepository.refreshDb()) {
                 is DataResource.Success -> {
                     emit(DataResource.Success(result.data ?: emptyList()))
                 }
+
                 is DataResource.Error -> emit(DataResource.Error(result.message))
                 is DataResource.Loading -> emit(DataResource.Loading())
             }

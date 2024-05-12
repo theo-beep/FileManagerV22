@@ -1,9 +1,10 @@
 package android.template.data.di
 
 import android.template.common.Constants
+import android.template.data.Repository.FileManagerRepository
+import android.template.data.Repository.FileManagerRepositoryImpl
 import android.template.data.network.FileManagerApi
-import android.template.data.network.Repository.FileManagerRepository
-import android.template.data.network.Repository.FileManagerRepositoryImpl
+import com.theolin.filemanagerapplication.Data.Database.FileManagerDb
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -25,8 +26,8 @@ object AppModule {
     }
 
     @Provides
-    fun provideFileManagerRepositoryRepository(api : FileManagerApi) : FileManagerRepository {
-        return FileManagerRepositoryImpl(api = api)
+    fun provideFileManagerRepositoryRepository(api : FileManagerApi ,db : FileManagerDb) : FileManagerRepository {
+        return FileManagerRepositoryImpl(api = api , db = db)
     }
 
 }
