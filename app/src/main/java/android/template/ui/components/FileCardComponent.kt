@@ -26,21 +26,22 @@ fun FileCardComponent(
         ){
             Column {
                 Text(
-                    modifier = Modifier.padding(start = 6.dp, top = 4.dp),
-                    text = title,
-                    style = MaterialTheme.typography.titleLarge
-                )
-                Text(
                     modifier = Modifier.padding(
                         top = 2.dp,
                         start = 6.dp,
-                        bottom = 4.dp,
+                        bottom = 0.dp,
                         end = 4.dp
                     ),
                     text = text,
                     style = MaterialTheme.typography.bodyMedium ,
                     color = Color.Gray
                 )
+                Text(
+                    modifier = Modifier.padding(start = 6.dp, top = 2.dp, bottom = 2.dp),
+                    text = title,
+                    style = MaterialTheme.typography.titleLarge
+                )
+
             }
         }
     }
