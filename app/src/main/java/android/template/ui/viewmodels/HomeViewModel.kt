@@ -47,22 +47,5 @@ class HomeViewModel @Inject constructor(
                 }
             }
         }
-
-//        viewModelScope.launch {
-//            _state.value = HomeScreenUiState.Loading
-//            files.invoke().collect {
-//                when (it) {
-//                    is DataResource.Success -> {
-//                        _state.value = HomeScreenUiState.Success(it.data ?: emptyList())
-//                    }
-//
-//                    is DataResource.Error -> {
-//                        _state.value = HomeScreenUiState.Error(it.message)
-//                    }
-//
-//                    is DataResource.Loading -> TODO()
-//                }
-//            }
-//        }
     }
 }

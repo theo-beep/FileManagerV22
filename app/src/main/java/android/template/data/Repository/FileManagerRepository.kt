@@ -2,6 +2,7 @@ package android.template.data.Repository
 
 import android.template.common.DataResource
 import android.template.data.network.FileManagerApi
+import android.template.data.network.model.CreateFileRequest
 import android.template.data.network.model.toDomain
 import android.template.domain.models.FileDomain
 import com.theolin.filemanagerapplication.Data.Database.FileManagerDb
@@ -16,8 +17,11 @@ interface FileManagerRepository {
 
     suspend fun refreshDb(): DataResource<List<FileDomain>>
 
+    suspend fun addNewFile(filePath: String)
+
     suspend fun clearDb()
 }
+
 class FileManagerRepositoryImpl @Inject constructor(
     private val api: FileManagerApi,
     private val db: FileManagerDb
@@ -58,11 +62,27 @@ class FileManagerRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun addNewFile(filePath: String) {
+        //TODO : If I have time make a class to inject dispatchers for testing
+        return withContext(Dispatchers.IO) {
+            try {
+                val request = CreateFileRequest(path = filePath)
+                val result = api.postNewDocument(request)
+                refreshDb()
+            } catch (e: Exception) {
+                e.printStackTrace()
+                DataResource.Error(
+                    message = e.stackTraceToString()
+                )
+            }
+        }
+    }
+
     override suspend fun clearDb() {
         withContext(Dispatchers.IO) {
             try {
                 db.deleteAll()
-            }catch (e: Exception){
+            } catch (e: Exception) {
                 e.stackTraceToString()
             }
         }

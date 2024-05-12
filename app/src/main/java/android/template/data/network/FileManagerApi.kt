@@ -21,7 +21,7 @@ interface FileManagerApi {
         @Query("path") path: String,
     ) : GetFilesResponse
 
-    @POST("documents/new_folder")
+    @POST("/file")
     suspend fun postNewDocument(@Body requestBody: CreateFileRequest): Response<Any>
 
     @PUT("/files")
