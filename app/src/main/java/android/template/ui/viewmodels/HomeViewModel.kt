@@ -34,6 +34,10 @@ class HomeViewModel @Inject constructor(
 
                     is DataResource.Error -> {
                         _state.value = HomeScreenUiState.Error(it.message)
+                        files.invoke().collect {
+                            _state.value = HomeScreenUiState.Success(it.data ?: emptyList())
+                        }
+
                     }
 
                     is DataResource.Loading -> {
