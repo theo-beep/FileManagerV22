@@ -16,6 +16,7 @@
 
 package android.template.ui
 
+import android.os.Build
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -24,13 +25,16 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import android.template.ui.mymodel.MyModelScreen
+import androidx.annotation.RequiresApi
+import com.theolin.filemanagerv2.ui.theme.screen.HomeScreen
 
+@RequiresApi(Build.VERSION_CODES.N)
 @Composable
 fun MainNavigation() {
     val navController = rememberNavController()
 
     NavHost(navController = navController, startDestination = "main") {
-        composable("main") { MyModelScreen(modifier = Modifier.padding(16.dp)) }
+        composable("main") { HomeScreen() }
         // TODO: Add more destinations
     }
 }

@@ -129,4 +129,14 @@ dependencies {
     androidTestImplementation(libs.androidx.test.core)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.androidx.test.runner)
+
+    //Json Reader
+    implementation ("com.google.code.gson:gson:2.9.1")
+
+    // Retrofit
+    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation ("com.squareup.okhttp3:okhttp:5.0.0-alpha.3")
+    implementation ("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.3")
+
 }
