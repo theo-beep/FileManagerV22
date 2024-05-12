@@ -15,6 +15,8 @@ interface FileManagerRepository {
     suspend fun getFiles(): DataResource<List<FileDomain>>
 
     suspend fun refreshDb(): DataResource<List<FileDomain>>
+
+    suspend fun clearDb()
 }
 class FileManagerRepositoryImpl @Inject constructor(
     private val api: FileManagerApi,
@@ -42,6 +44,7 @@ class FileManagerRepositoryImpl @Inject constructor(
         return withContext(Dispatchers.IO) {
             try {
                 val result = api.getAllFiles().map { it.toDomain() }
+                db.deleteAll()
                 result.forEach {
                     db.insertAll(it.toStore())
                 }
@@ -51,6 +54,16 @@ class FileManagerRepositoryImpl @Inject constructor(
                 DataResource.Error(
                     message = e.stackTraceToString()
                 )
+            }
+        }
+    }
+
+    override suspend fun clearDb() {
+        withContext(Dispatchers.IO) {
+            try {
+                db.deleteAll()
+            }catch (e: Exception){
+                e.stackTraceToString()
             }
         }
     }
